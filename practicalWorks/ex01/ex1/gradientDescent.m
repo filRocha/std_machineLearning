@@ -9,20 +9,18 @@ J_history = zeros(num_iters, 1);
 
 for iter = 1:num_iters
 
-    % ====================== YOUR CODE HERE ======================
-    % Instructions: Perform a single gradient step on the parameter vector
-    %               theta. 
-    %
-    % Hint: While debugging, it can be useful to print out the values
-    %       of the cost function (computeCost) and gradient here.
-    %
+    % Iterates 4all training examples
 
-
-
-
-
-
-
+    % Computes the error for each x 
+    aux = theta.' * X.' - y.';
+    
+    for i=1:size(theta,1)
+        dJ(i,:) = sum(aux.' .* X(:,i));
+    end
+    
+    % Updating theta
+    theta = theta - alpha * (1/m) * dJ;
+    
     % ============================================================
 
     % Save the cost J in every iteration    

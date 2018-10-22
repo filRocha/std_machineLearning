@@ -31,9 +31,9 @@ clear ; close all; clc
 fprintf('Running warmUpExercise ... \n');
 fprintf('5x5 Identity Matrix: \n');
 warmUpExercise()
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
+% 
+% fprintf('Program paused. Press enter to continue.\n');
+% pause;
 
 
 %% ======================= Part 2: Plotting =======================
@@ -46,8 +46,8 @@ m = length(y); % number of training examples
 % Note: You have to complete the code in plotData.m
 plotData(X, y);
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
+% % fprintf('Program paused. Press enter to continue.\n');
+% pause;
 
 %% =================== Part 3: Cost and Gradient descent ===================
 
@@ -56,7 +56,7 @@ theta = zeros(2, 1); % initialize fitting parameters
 
 % Some gradient descent settings
 iterations = 1500;
-alpha = 0.01;
+alpha = 0.01; % step size
 
 fprintf('\nTesting the cost function ...\n')
 % compute and display initial cost
@@ -68,9 +68,6 @@ fprintf('Expected cost value (approx) 32.07\n');
 J = computeCost(X, y, [-1 ; 2]);
 fprintf('\nWith theta = [-1 ; 2]\nCost computed = %f\n', J);
 fprintf('Expected cost value (approx) 54.24\n');
-
-fprintf('Program paused. Press enter to continue.\n');
-pause;
 
 fprintf('\nRunning Gradient Descent ...\n')
 % run gradient descent
