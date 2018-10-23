@@ -14,7 +14,11 @@ J = 0;
 %               You should set J to the cost.
 
 
-
+% Computing the cost function
+for j=1:m
+   J = J + (theta.' * X(j,:).' - y(j))^2; 
+end
+J = J * (1/(2*m));
 
 
 % =========================================================================

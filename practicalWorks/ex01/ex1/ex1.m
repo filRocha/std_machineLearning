@@ -93,8 +93,6 @@ predict2 = [1, 7] * theta;
 fprintf('For population = 70,000, we predict a profit of %f\n',...
     predict2*10000);
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
 
 %% ============= Part 4: Visualizing J(theta_0, theta_1) =============
 fprintf('Visualizing J(theta_0, theta_1) ...\n')

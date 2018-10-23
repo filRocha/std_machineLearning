@@ -5,10 +5,23 @@ function [X_norm, mu, sigma] = featureNormalize(X)
 %   is 1. This is often a good preprocessing step to do when
 %   working with learning algorithms.
 
-% You need to set these values correctly
-X_norm = X;
-mu = zeros(1, size(X, 2));
-sigma = zeros(1, size(X, 2));
+% Initialize variables
+X_norm = zeros(size(X,1),size(X,2));
+
+% Acessing all parameters available
+for i=1:size(X,2)
+  
+     % Stores the mean of this feature
+    mu(1,i) = mean(X(:,i));
+    
+    % Normalizes each column of X
+    X_norm(:,i) = (X(:,i) -  mu(1,i)) / (max(X(:,i)) - min(X(:,i)));
+    
+   % Stores the standard deviation of the X column
+   sigma = std(X(:,i));
+    
+end
+
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: First, for each feature dimension, compute the mean
@@ -35,5 +48,4 @@ sigma = zeros(1, size(X, 2));
 
 
 % ============================================================
-
 end
