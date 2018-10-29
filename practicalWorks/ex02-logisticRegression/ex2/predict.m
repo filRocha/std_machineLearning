@@ -15,6 +15,11 @@ p = zeros(m, 1);
 %               You should set p to a vector of 0's and 1's
 %
 
+% Computes the prediction probability 
+aux_p = sigmoid(X * theta);
+
+% Predicts based on a threshold
+p(find(aux_p >= 0.5)) = 1;
 
 
 

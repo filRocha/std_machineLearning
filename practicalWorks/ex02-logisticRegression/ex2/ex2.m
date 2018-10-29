@@ -8,7 +8,7 @@
 %  in this exericse:
 %
 %     sigmoid.m
-%     costFunction.m
+%     codstFunction.m
 %     predict.m
 %     costFunctionReg.m
 %

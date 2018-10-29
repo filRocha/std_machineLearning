@@ -9,7 +9,7 @@ m = length(y); % number of training examples
 
 % You need to return the following variables correctly 
 J = 0;
-grad = zeros(size(theta));
+grad_size = length(theta);
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Compute the cost of a particular choice of theta.
@@ -17,10 +17,17 @@ grad = zeros(size(theta));
 %               Compute the partial derivatives and set grad to the partial
 %               derivatives of the cost w.r.t. each parameter in theta
 
+% Computing h_theta(x) 4alltraining samples
+h = sigmoid(X * theta);
 
+% Computing regularized cost
+% Remark that theta_0 is not penalized on the cost (theta(1))
+J = (1/m) * ( -y.' * log(h) -  ((1-y).')*log(1-h) ) + ((lambda/(2*m))*(sum(theta(2:grad_size).^2)));
 
+grad(1) = (1/m) * X(:,1).' * (h - y);
 
-
+% Computing the gradient for the rest
+grad(2:grad_size,1) = (1/m) * X(:,2:size(X,2)).' * (h - y) + (lambda/m)*theta(2:length(theta));
 
 % =============================================================
 
