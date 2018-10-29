@@ -12,11 +12,19 @@ figure; hold on;
 %               examples and 'ko' for the negative examples.
 %
 
+% Plotting approved
+indi_approved = find(y == 1);
+scatter(X(indi_approved,1),X(indi_approved,2),'b+','LineWidth',2);
 
+% Plottin disapproved
+indi_disapproved = find(y == 0);
+scatter(X(indi_disapproved,1),X(indi_disapproved,2),'ro','LineWidth',2);
 
-
-
-
+% Figure implementing.
+title('Last years student approval');
+xlabel('Exam 1 score'); ylabel('Exam 2 score');
+grid on;
+legend('Approved','Disapproved');
 
 
 
