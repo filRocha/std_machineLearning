@@ -7,6 +7,7 @@ function [J, grad] = lrCostFunction(theta, X, y, lambda)
 
 % Initialize some useful values
 m = length(y); % number of training examples
+n = length(theta);
 
 % You need to return the following variables correctly 
 J = 0;
@@ -26,7 +27,7 @@ grad = zeros(size(theta));
 %       Each row of the resulting matrix will contain the value of the
 %       prediction for that example. You can make use of this to vectorize
 %       the cost function and gradient computations. 
-%
+%g
 % Hint: When computing the gradient of the regularized cost function, 
 %       there're many possible vectorized solutions, but one solution
 %       looks like:
@@ -36,12 +37,17 @@ grad = zeros(size(theta));
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
 
+% Computing the prediction for all examples
+h = sigmoid(X*theta);
 
+% Computing the cost for this predictiion
+J = (1/m)*( -y.'*log(h) - (1-y).'*(log(1-h)) ) + ( (lambda/(2*m)) * sum(theta(2:end).^2) );
 
+% J = (1/m) * ( (-y.' * log(h)) - ((1-y).'*log(1-h))) + (lambda/(2*m))*sum(theta.^2) ;
 
-
-
-
+% Computing the gradient for this prediction/
+grad(1) = (1/m) * X(:,1).' * (h-y);
+grad(2:n) = (1/m) * X(:,2:n).' * (h-y) + (lambda/m)*theta(2:n);
 
 
 
