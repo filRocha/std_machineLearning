@@ -30,10 +30,11 @@ X = [ones(m, 1) X];
 %       for each row.
 %       
 
+% Computes prediction
+aux_p = sigmoid(X * all_theta.');
 
-
-
-
+% Get the maximum prediction for each training example
+[~,p] = max(aux_p,[],2);
 
 
 % =========================================================================
