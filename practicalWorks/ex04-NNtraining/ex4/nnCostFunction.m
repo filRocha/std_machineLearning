@@ -1,4 +1,4 @@
-function [J grad] = nnCostFunction(nn_params, ...
+function [J, grad] = nnCostFunction(nn_params, ...
                                    input_layer_size, ...
                                    hidden_layer_size, ...
                                    num_labels, ...
@@ -29,6 +29,9 @@ M = size(X, 1);
 J = 0;
 Theta1_grad = zeros(size(Theta1));
 Theta2_grad = zeros(size(Theta2));
+
+Delta1 = zeros(size(Theta1));
+Delta2 = zeros(size(Theta2));
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: You should complete the code by working through the
@@ -73,14 +76,14 @@ end
 
 % input layer
 % adding bias to the entering vector
-a1 = [ones(M,1), X];
+a1 = [ones(M,1), X].';
 
 % hidden layer
-z2 = Theta1 * a1.';
-a2 = [ones(M,1), sigmoid(z2.')]; % adds bias
+z2 = Theta1 * a1;
+a2 = [ones(M,1), sigmoid(z2.')].'; % adds bias
 
 % output layer
-z3 = Theta2 * a2.';
+z3 = Theta2 * a2;
 a3 = sigmoid(z3.');
 
 % hipothesys
@@ -105,26 +108,28 @@ J = J1 +J2;
 
 %% --- Backprop
 
-% last layer error
-delta_3 = a3 - y_new;
 
-% layer 2 error
-g_prime2 = a2 .* (1-a2);
-delta_2 = (Theta2.' * delta_3.').' .*  g_prime2;
+% computing delta matrices
+for m=1:M
+    
+    % layer 3 (last) error
+    delta_3 = a3(m,:).' - y_new(m,:).';
+    
+    % layer 2 error
+    delta_2 = (Theta2.' * delta_3) .*  a2(:,m) .* (1-a2(:,m));
+    
+    % deltas
+    Delta2 = Delta2 + delta_3 * a2(:, m).';
+    
+    Delta1 = Delta1 + delta_2(2:end) * a1(:, m).';
+    
+end
 
-% -- Delta matrices
+Theta2_grad = (1/M) * Delta2 + lambda * Theta2;
+Theta2_grad(:,1) = (1/M) * Delta2(:,size(Theta2_grad,2));
 
-Delta2 = delta_3.' * a2;
-Delta1 = delta_2.' * a1;
-
-% D2 matrix
-D2 = (1/M) * (Delta2 + lambda * Theta2);
-D2(:,1) = (1/M) * Delta2(:,1);
-
-% D1 matrix
-D1 = (1/M) * (Delta1(2:size(Delta2,2),:) + lambda * Theta1);
-D1(:,1) = (1/M) * (Delta1(2:size(Delta2,2),1));
-
+Theta1_grad = (1/M) * Delta1 + lambda * Theta1;
+Theta1_grad(:,1) = (1/M) * Delta1(:,size(Theta1_grad,2));
 
 % -------------------------------------------------------------
 
