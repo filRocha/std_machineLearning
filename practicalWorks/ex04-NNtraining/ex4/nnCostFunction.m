@@ -67,24 +67,25 @@ Delta2 = zeros(size(Theta2));
 
 
 % --- Converting the y representation to a vector
-y_new = zeros(M,max(y));
+y_new = zeros(max(y),M);
 for i=1:M
-    y_new(i, y(i)) = 1;
+    y_new(y(i),i) = 1;
 end
+
 
 %% --- feedforwarding the NN
 
 % input layer
 % adding bias to the entering vector
-a1 = [ones(M,1), X].';
+a1 = [ones(1,M); X.'];
 
 % hidden layer
 z2 = Theta1 * a1;
-a2 = [ones(M,1), sigmoid(z2.')].'; % adds bias
+a2 = [ones(1,M); sigmoid(z2)]; % adds bias
 
 % output layer
 z3 = Theta2 * a2;
-a3 = sigmoid(z3.');
+a3 = sigmoid(z3);
 
 % hipothesys
 h_x = a3;
@@ -96,9 +97,10 @@ J1 = 0;
 for m = 1:M         % iterates for all training examples
 
         % cost function without regularization and factor -1/m
-        J1 = J1 + (y_new(m,:)*log(h_x(m,:)).') + ((1-y_new(m,:))*log(1-h_x(m,:)).');
+        J1 = J1 + (-y_new(:,m).'*log(h_x(:,m)) - ((1-y_new(:,m)).'*log(1-h_x(:,m))));
+    
 end
-J1 = (-1/M) * J1;
+J1 = (1/M) * J1;
 
 % second part: regularization cost 
 J2 = (lambda/(2*M)) * sum(nn_params.^2);
@@ -108,30 +110,29 @@ J = J1 +J2;
 
 %% --- Backprop
 
-
 % computing delta matrices
 for m=1:M
     
     % layer 3 (last) error
-    delta_3 = a3(m,:).' - y_new(m,:).';
+    delta_3 = a3(:,m) - y_new(:,m);
     
     % layer 2 error
-    delta_2 = (Theta2.' * delta_3) .*  a2(:,m) .* (1-a2(:,m));
+    aux_delta_2 = (Theta2.' * delta_3);
+    delta_2 = aux_delta_2(2:end) .*  sigmoidGradient(z2(:,m)); % eliminates first row of aux_delta_2 because of bias
     
     % deltas
-    Delta2 = Delta2 + delta_3 * a2(:, m).';
+    Delta2 = Delta2 + delta_3 * a2(:,m).';
     
-    Delta1 = Delta1 + delta_2(2:end) * a1(:, m).';
+    Delta1 = Delta1 + delta_2 * a1(:, m).';
     
 end
 
-Theta2_grad = (1/M) * Delta2 + lambda * Theta2;
-Theta2_grad(:,1) = (1/M) * Delta2(:,size(Theta2_grad,2));
+% regularized gradient for the neural network cost function
+Theta1_grad = (1/M) * Delta1 + (lambda/M) * Theta1;
+Theta1_grad(:,1) = (1/M) * Delta1(:,1);
 
-Theta1_grad = (1/M) * Delta1 + lambda * Theta1;
-Theta1_grad(:,1) = (1/M) * Delta1(:,size(Theta1_grad,2));
-
-% -------------------------------------------------------------
+Theta2_grad = (1/M) * Delta2 + (lambda/M) * Theta2;
+Theta2_grad(:,1) = (1/M) * Delta2(:,1);
 
 % =========================================================================
 
