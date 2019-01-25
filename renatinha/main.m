@@ -1,4 +1,7 @@
 % code renatilda
+% implemented by filipe rocha: f.rocha41@gmail.com
+% january 2019
+
 clear all;
 clc;
 close all;
