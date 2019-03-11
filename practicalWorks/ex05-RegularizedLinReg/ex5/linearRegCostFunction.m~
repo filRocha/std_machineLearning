@@ -35,7 +35,7 @@ J = j1 + j2;
 % one may see that the first gradient has a different formula
 grad(1) = (1/m) * sum((h - y) .* X(:,1));
 
-grad(2) = ((1/m) * sum((h - y) .* X(:,2))) + ((lambda/m)*theta(2));
+grad(2) = ((1/m) * sum((h - y) .* X(:,2))) + ((lambda/m)*theta)
 
 
 
